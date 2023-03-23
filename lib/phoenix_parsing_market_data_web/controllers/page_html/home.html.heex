@@ -1,1 +1,23 @@
-<%= @top_currencies %>
+<table>
+  <tr>
+    <%= for column_index <- 0..@number_of_columns do %>
+      <th><%= Enum.at(@columns, column_index) %></th>
+    <% end %>
+  </tr>
+  <%= for object_index <- 0..@number_of_objects do %>
+    <tr>
+      <%= for column_index <- 0..@number_of_columns do %>
+        <th>
+          <%=
+            object = Enum.at(@top_currencies, object_index)
+            column = Enum.at(@columns, column_index)
+            IO.inspect(object)
+            IO.inspect(column)
+            IO.inspect(@top_currencies)
+            Map.get(object, column)
+          %>
+        </th>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

@@ -8,23 +8,33 @@ defmodule PhoenixParsingMarketDataWeb.PageController do
     Top.run(["--count=3", "--column=changePercent"])
   end
 
-  def display_object(object) do
-    "{" <> Enum.reduce(object, "", fn {x, y}, acc ->
-        cond do
-          is_float(y) -> acc <> x <> ": " <> Float.to_string(y) <> ","
-          is_integer(y) -> acc <> x <> ": " <> Integer.to_string(y) <> ","
-          true -> acc <> x <> ": " <> y <> ","
-        end
-      end)
-    <> "}"
+  def convert_value_to_string(value) do
+    cond do
+      is_integer(value) -> Integer.to_string(value)
+      is_float(value) -> Float.to_string(value)
+      true -> value
+    end
+  end
+
+  def get_columns(objects) do
+    Enum.at(objects, 0) |> Enum.map(fn {x, _} -> x end)
   end
 
   def home(conn, _params) do
-    # The home page is often custom made,
-    # so skip the default app layout.
     objects = get_objects()
-    objects_as_strings = Enum.reduce(objects, "", fn x, acc -> acc <> display_object(x) <> ";" end)
-    render(conn, :home, layout: false, top_currencies: objects_as_strings)
+    columns = get_columns(objects)
+    number_of_objects = Enum.count(objects)
+    number_of_columns = Enum.count(columns)
+    objects_with_string_properties =
+      Enum.map(objects, fn x ->
+        Enum.map(x, fn {x, y} -> {x, convert_value_to_string(y)} end) |> Enum.into(%{})
+      end)
+
+    render(conn, :home, layout: false,
+      top_currencies: objects_with_string_properties,
+      columns: columns,
+      number_of_objects: number_of_objects - 1,
+      number_of_columns: number_of_columns - 1)
   end
 
 end
