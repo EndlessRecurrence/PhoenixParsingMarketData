@@ -20,7 +20,7 @@ defmodule ArgParsing do
     Enum.member?(allowed_arguments, Enum.at(arg, 0)) && are_arguments_allowed?(allowed_arguments, args)
   end
 
-  def get_argument_value_by_name([], name), do: :error
+  def get_argument_value_by_name([], _), do: :error
   def get_argument_value_by_name([arg | args], name) do
     if Enum.at(arg, 0) == name, do: Enum.at(arg, 1), else: get_argument_value_by_name(args, name)
   end

@@ -1,6 +1,5 @@
 defmodule Currencies.Top do
   @moduledoc "A Mix task retrieving the top x currencies by a specified property"
-  use Application
 
   def read_objects_from_json_file() do
     {status, contents} = File.read("assets/objects.json")

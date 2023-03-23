@@ -2,6 +2,7 @@ defmodule PhoenixParsingMarketDataWeb.PageController do
   use PhoenixParsingMarketDataWeb, :controller
   alias Currencies.Parse, as: Parse
   alias Currencies.Top, as: Top
+  alias PhoenixParsingMarketData.CurrencyContext
 
   def get_objects() do
     Parse.run(["--path=assets/data.txt"])
@@ -20,6 +21,12 @@ defmodule PhoenixParsingMarketDataWeb.PageController do
     Enum.at(objects, 0) |> Enum.map(fn {x, _} -> x end)
   end
 
+  def insert_database_rows() do
+    CurrencyContext.insert_currency("RON")
+    CurrencyContext.insert_currency("EUR")
+    CurrencyContext.insert_currency("USD")
+  end
+
   def home(conn, _params) do
     objects = get_objects()
     columns = get_columns(objects)
@@ -29,6 +36,8 @@ defmodule PhoenixParsingMarketDataWeb.PageController do
       Enum.map(objects, fn x ->
         Enum.map(x, fn {x, y} -> {x, convert_value_to_string(y)} end) |> Enum.into(%{})
       end)
+
+    insert_database_rows()
 
     render(conn, :home, layout: false,
       top_currencies: objects_with_string_properties,
