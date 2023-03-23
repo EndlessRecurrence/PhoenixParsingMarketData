@@ -1,23 +1,24 @@
-<table>
-  <tr>
-    <%= for column_index <- 0..@number_of_columns do %>
-      <th><%= Enum.at(@columns, column_index) %></th>
-    <% end %>
-  </tr>
-  <%= for object_index <- 0..@number_of_objects do %>
+<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+  <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
     <tr>
       <%= for column_index <- 0..@number_of_columns do %>
-        <th>
-          <%=
-            object = Enum.at(@top_currencies, object_index)
-            column = Enum.at(@columns, column_index)
-            IO.inspect(object)
-            IO.inspect(column)
-            IO.inspect(@top_currencies)
-            Map.get(object, column)
-          %>
-        </th>
+        <th scope="col" class="px-6 py-3"><%= Enum.at(@columns, column_index) %></th>
       <% end %>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <%= for object_index <- 0..@number_of_objects do %>
+      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        <%= for column_index <- 0..@number_of_columns do %>
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%=
+              object = Enum.at(@top_currencies, object_index)
+              column = Enum.at(@columns, column_index)
+              Map.get(object, column)
+            %>
+          </th>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
