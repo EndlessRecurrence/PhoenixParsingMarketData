@@ -7,6 +7,8 @@
 # General application configuration
 import Config
 
+config :market_data_file, path: "assets/data.txt"
+
 config :phoenix_parsing_market_data,
   ecto_repos: [PhoenixParsingMarketData.Repo]
 
