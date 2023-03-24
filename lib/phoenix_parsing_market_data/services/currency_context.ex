@@ -1,9 +1,9 @@
 defmodule PhoenixParsingMarketData.CurrencyContext do
   alias PhoenixParsingMarketData.Repo
 
-  def insert_currency(name) do
+  def insert_currency(name, description) do
     currency = %PhoenixParsingMarketData.Currency{}
-    changeset = PhoenixParsingMarketData.Currency.changeset(currency, %{name: name})
+    changeset = PhoenixParsingMarketData.Currency.changeset(currency, %{name: name, description: description})
     Repo.insert(changeset)
   end
 

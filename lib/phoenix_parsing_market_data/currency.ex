@@ -4,8 +4,6 @@ defmodule PhoenixParsingMarketData.Currency do
   schema "currencies" do
     field :name, :string
     field :description, :string
-
-    timestamps()
   end
 
   def changeset(currency, params \\ %{}) do

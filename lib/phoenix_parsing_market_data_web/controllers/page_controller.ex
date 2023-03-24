@@ -22,9 +22,9 @@ defmodule PhoenixParsingMarketDataWeb.PageController do
   end
 
   def insert_database_rows() do
-    CurrencyContext.insert_currency("RON")
-    CurrencyContext.insert_currency("EUR")
-    CurrencyContext.insert_currency("USD")
+    CurrencyContext.insert_currency("RON", "Romanian currency")
+    CurrencyContext.insert_currency("EUR", "European currency")
+    CurrencyContext.insert_currency("USD", "American currency")
   end
 
   def home(conn, _params) do

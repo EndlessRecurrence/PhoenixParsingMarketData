@@ -6,8 +6,6 @@ defmodule PhoenixParsingMarketData.Value do
     belongs_to :currencies, Currency
     field :date
     field :value
-
-    timestamps()
   end
 
   def changeset(currency, params \\ %{}) do
