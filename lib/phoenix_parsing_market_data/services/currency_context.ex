@@ -6,4 +6,10 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
     changeset = PhoenixParsingMarketData.Currency.changeset(currency, %{name: name})
     Repo.insert(changeset)
   end
+
+  def fetch_currencies() do
+    PhoenixParsingMarketData.Currency
+    |> Ecto.Query.first()
+    |> Repo.all()
+  end
 end
