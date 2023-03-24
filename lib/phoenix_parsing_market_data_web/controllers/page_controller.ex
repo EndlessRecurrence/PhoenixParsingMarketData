@@ -1,7 +1,7 @@
 defmodule PhoenixParsingMarketDataWeb.PageController do
   use PhoenixParsingMarketDataWeb, :controller
-  alias Currencies.Parse, as: Parse
-  alias Currencies.Top, as: Top
+  alias Currencies.Parse
+  alias Currencies.Top
   alias PhoenixParsingMarketData.CurrencyContext
 
   def get_objects() do

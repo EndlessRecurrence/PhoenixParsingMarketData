@@ -3,7 +3,7 @@ defmodule PhoenixParsingMarketData.Repo.Migrations.CreateValuesTable do
 
   def change do
     create table(:values) do
-      add :currency_id, references("currencies")
+      add :currency_id, references(:currencies)
       add :date, :date
       add :value, :float
     end

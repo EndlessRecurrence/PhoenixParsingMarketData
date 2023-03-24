@@ -1,17 +1,10 @@
-defmodule PhoenixParsingMarketData.Value do
-  use Ecto.Schema
-  alias PhoenixParsingMarketData.Currency
+defmodule PhoenixParsingMarketData.ValueContext do
+  alias PhoenixParsingMarketData.Repo
+  alias PhoenixParsingMarketData.Values.Value, as: Value
 
-  schema "values" do
-    belongs_to :currencies, Currency
-    field :date
-    field :value
+  def insert_value(currency_id, date, value) do
+    value_struct = %Value{}
+    changeset = Value.changeset(value_struct, %{currency_id: currency_id, date: date, value: value})
+    Repo.insert(changeset)
   end
-
-  def changeset(currency, params \\ %{}) do
-    currency
-    |> Ecto.Changeset.cast(params, [:currencies, :date, :value])
-    |> Ecto.Changeset.validate_required([:currencies, :date, :value])
-  end
-
 end
