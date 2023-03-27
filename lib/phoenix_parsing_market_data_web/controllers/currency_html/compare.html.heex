@@ -1,5 +1,4 @@
 <.header>
-  <h1> <%= @table_values.first_currency %> /  <%= @table_values.second_currency %> </h1>
 </.header>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -18,10 +17,37 @@
         <th scope="col" class="px-6 py-3">
           Conversion rate
         </th>
+        <th scope="col" class="px-6 py-3 bg-gray-50 dark:bg-gray-800">
+          Variation
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Variation (%)
+        </th>
     </tr>
 </thead>
 <tbody>
-    <%= for value_index <- 0..length(@table_values.conversion_rates)-1 do %>
+    <tr class="border-b border-gray-200 dark:border-gray-700">
+        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+          <%= Enum.at(@table_values.dates, 0) %>
+        </th>
+        <td class="px-6 py-4">
+          <%= Enum.at(@table_values.first_currency_values, 0) |> Float.round(4) %>
+        </td>
+        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+          <%= Enum.at(@table_values.second_currency_values, 0) |> Float.round(4) %>
+        </td>
+        <td class="px-6 py-4">
+          <% rate = Enum.at(@table_values.conversion_rates, 0) |> Float.round(4) %>
+          <%= "1 " <> @table_values.first_currency <> " = " <> Float.to_string(rate) <> " " <> @table_values.second_currency %>
+        </td>
+        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+          -
+        </td>
+        <td class="px-6 py-4">
+          -
+        </td>
+    </tr>
+    <%= for value_index <- 1..length(@table_values.conversion_rates)-1 do %>
     <tr class="border-b border-gray-200 dark:border-gray-700">
         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
           <%= Enum.at(@table_values.dates, value_index) %>
@@ -35,6 +61,12 @@
         <td class="px-6 py-4">
           <% rate = Enum.at(@table_values.conversion_rates, value_index) |> Float.round(4) %>
           <%= "1 " <> @table_values.first_currency <> " = " <> Float.to_string(rate) <> " " <> @table_values.second_currency %>
+        </td>
+        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+          <%= rate_change = rate - Enum.at(@table_values.conversion_rates, value_index - 1) |> Float.round(4) %>
+        </td>
+        <td class="px-6 py-4">
+          <%= rate_change / Enum.at(@table_values.conversion_rates, value_index - 1) * 100 |> Float.round(2) %>%
         </td>
     </tr>
     <% end %>
