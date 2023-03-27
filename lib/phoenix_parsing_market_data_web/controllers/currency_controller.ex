@@ -34,6 +34,11 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
     render(conn, :show, currency: currency, currencies: currencies)
   end
 
+  def compare(conn, %{"first_id" => first_id, "second_id" => second_id}) do
+    table_values = CurrencyContext.compare_two_currencies(first_id, second_id)
+    render(conn, :compare, table_values: table_values)
+  end
+
   #def edit(conn, %{"id" => id}) do
   #  currency = CurrencyContext.get_currency!(id)
   #  changeset = CurrencyContext.change_currency(currency)

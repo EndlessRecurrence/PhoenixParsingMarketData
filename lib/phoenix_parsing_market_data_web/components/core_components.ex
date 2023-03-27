@@ -560,7 +560,6 @@ defmodule PhoenixParsingMarketDataWeb.CoreComponents do
     """
   end
 
-
   def list(assigns) do
     ~H"""
     <div class="mt-14">

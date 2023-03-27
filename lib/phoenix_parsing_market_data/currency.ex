@@ -35,4 +35,37 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
       |> Repo.preload(:values)
   end
   def get_currency!(_), do: raise RuntimeError, message: "The id given to the get_currency function is not an integer."
+
+  def compare_two_currencies(first_currency_id, second_currency_id) do
+    first_currency = get_currency!(String.to_integer(first_currency_id))
+    second_currency = get_currency!(String.to_integer(second_currency_id))
+
+    first_currency_values_structs =
+      Map.get(first_currency, :values) |>
+      Enum.sort(fn x, y -> Date.compare(Map.get(x, :date), Map.get(y, :date)) != :lt end)
+    second_currency_values_structs =
+      Map.get(second_currency, :values) |>
+      Enum.sort(fn x, y -> Date.compare(Map.get(x, :date), Map.get(y, :date)) != :lt end)
+    dates = Enum.map(first_currency_values_structs, fn x -> Map.get(x, :date) end)
+
+    first_currency_values = Enum.map(first_currency_values_structs, &Map.get(&1, :value))
+    second_currency_values = Enum.map(second_currency_values_structs, &Map.get(&1, :value))
+
+    conversion_rates =
+      Enum.zip(first_currency_values, second_currency_values)
+        |> dbg()
+        |> Enum.reduce([], fn {x, y}, acc ->
+          element = x/ y
+          acc ++ [element]
+        end)
+
+    %{
+      first_currency: Map.get(first_currency, :name),
+      second_currency: Map.get(second_currency, :name),
+      dates: dates,
+      first_currency_values: first_currency_values,
+      second_currency_values: second_currency_values,
+      conversion_rates: conversion_rates
+    }
+  end
 end

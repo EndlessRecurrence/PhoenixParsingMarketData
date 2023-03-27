@@ -20,6 +20,7 @@ defmodule PhoenixParsingMarketDataWeb.Router do
     get "/", PageController, :home
     get "/currencies", CurrencyController, :index
     get "/currencies/:id", CurrencyController, :show
+    get "/currencies/:first_id/:second_id", CurrencyController, :compare
   end
 
   # Other scopes may use custom stacks.
