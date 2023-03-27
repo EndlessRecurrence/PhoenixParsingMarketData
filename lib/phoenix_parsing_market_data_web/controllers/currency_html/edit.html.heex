@@ -1,0 +1,8 @@
+<.header>
+  Edit Currency <%= @currency.id %>
+  <:subtitle>Use this form to manage currency records in your database.</:subtitle>
+</.header>
+
+<.currency_form changeset={@changeset} action={~p"/currencies/#{@currency}"} />
+
+<.back navigate={~p"/currencies"}>Back to currencies</.back>

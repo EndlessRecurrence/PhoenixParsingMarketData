@@ -18,6 +18,8 @@ defmodule PhoenixParsingMarketDataWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/currencies", CurrencyController, :index
+    get "/currencies/:id", CurrencyController, :show
   end
 
   # Other scopes may use custom stacks.

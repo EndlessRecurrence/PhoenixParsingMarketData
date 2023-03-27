@@ -24,4 +24,13 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
     IO.puts(Integer.to_string(id) <> " " <> Float.to_string(value))
     generate_random_currency_values(currency, days - 1, Date.add(day, 1), value + variation)
   end
+
+  def fetch_currencies() do
+    from(c in Currency, select: c) |> Repo.all()
+  end
+
+  def get_currency!(id) when is_integer(id) do
+    from(c in Currency, where: [id: ^id]) |> Repo.one()
+  end
+  def get_currency!(_), do: raise RuntimeError, message: "The id given to the get_currency function is not an integer."
 end

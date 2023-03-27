@@ -13,6 +13,7 @@ defmodule PhoenixParsingMarketDataWeb.CoreComponents do
   alias Phoenix.LiveView.JS
   import PhoenixParsingMarketDataWeb.Gettext
 
+  @spec modal(map) :: Phoenix.LiveView.Rendered.t()
   @doc """
   Renders a modal.
 
@@ -537,6 +538,24 @@ defmodule PhoenixParsingMarketDataWeb.CoreComponents do
   """
   slot :item, required: true do
     attr :title, :string, required: true
+  end
+
+  def currency_list(assigns) do
+    ~H"""
+    <div class="mt-14">
+      <dl class="-my-4 divide-y divide-zinc-100">
+        <div :for={item <- @item} class="flex gap-4 py-4 sm:gap-8">
+          <.link
+            href={"/currencies/" <> Integer.to_string(item.id)}>
+            <dt class="w-3/5 flex-none text-[0.8125rem] leading-6 text-zinc-500">
+              <div> <%= item.name %> </div>
+              <div> <%= item.description %> </div>
+            </dt>
+          </.link>
+        </div>
+      </dl>
+    </div>
+    """
   end
 
   def list(assigns) do
