@@ -30,7 +30,9 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
   end
 
   def get_currency!(id) when is_integer(id) do
-    from(c in Currency, where: [id: ^id]) |> Repo.one()
+    from(c in Currency, where: [id: ^id])
+      |> Repo.one()
+      |> Repo.preload(:values)
   end
   def get_currency!(_), do: raise RuntimeError, message: "The id given to the get_currency function is not an integer."
 end
