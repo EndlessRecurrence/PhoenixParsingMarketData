@@ -29,8 +29,7 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
   def show(conn, %{"id" => id}) do
     currency = CurrencyContext.get_currency!(String.to_integer(id))
     currencies = CurrencyContext.fetch_currencies() |> Enum.filter(fn x -> Map.get(x, :name) != Map.get(currency, :name) end)
-    IO.inspect currency
-    IO.inspect currencies
+
     render(conn, :show, currency: currency, currencies: currencies)
   end
 

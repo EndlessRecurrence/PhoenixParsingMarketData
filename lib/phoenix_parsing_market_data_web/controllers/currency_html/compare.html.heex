@@ -1,6 +1,9 @@
 <.header>
 </.header>
 
+<div id="exchangeRateVariationPlot" style="width:600px;height:250px;">
+</div>
+
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
@@ -75,3 +78,17 @@
 </div>
 
 <.back navigate={~p"/currencies"}>Back to currencies</.back>
+
+<%
+  dates = Enum.map(@table_values.dates, fn x -> Date.to_string(x) end) |> Jason.encode!() |> raw
+  IO.inspect(dates)
+  values = Enum.map(@table_values.conversion_rates, fn x -> Float.round(x, 4) end) |> Jason.encode!() |> raw
+  IO.inspect(values)
+%>
+
+<script>
+  indexes = <%= dates %>
+  values = <%= values %>
+  plotDiv = document.getElementById('exchangeRateVariationPlot');
+  Plotly.newPlot(plotDiv, [{x: indexes, y: values }], {margin: { t: 0 }});
+</script>

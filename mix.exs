@@ -32,6 +32,7 @@ defmodule PhoenixParsingMarketData.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:jason, "~> 1.4"},
       {:phoenix, "~> 1.7.1"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
