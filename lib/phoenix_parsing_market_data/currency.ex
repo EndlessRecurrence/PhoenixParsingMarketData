@@ -21,7 +21,8 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
     ValueContext.insert_value(id, day, value)
     negative_or_positive = if :rand.uniform() < 0.5, do: -1, else: 1
     variation = :rand.uniform() * 0.1 * negative_or_positive |> Float.round(4)
-    generate_random_currency_values(currency, days - 1, Date.add(day, 1), value + variation)
+    new_value = if value + variation < 0, do: value - variation, else: value + variation
+    generate_random_currency_values(currency, days - 1, Date.add(day, 1), new_value)
   end
 
   def fetch_currencies() do
