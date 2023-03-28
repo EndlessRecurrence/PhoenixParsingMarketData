@@ -2,6 +2,7 @@ defmodule PhoenixParsingMarketData.Currencies.Currency do
   use Ecto.Schema
   alias PhoenixParsingMarketData.Values.Value
 
+  @derive {Jason.Encoder, only: [:id, :name, :description]}
   schema "currencies" do
     field :name, :string
     field :description, :string

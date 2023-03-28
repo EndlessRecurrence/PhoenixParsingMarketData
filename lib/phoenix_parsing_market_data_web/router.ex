@@ -19,14 +19,16 @@ defmodule PhoenixParsingMarketDataWeb.Router do
 
     get "/", PageController, :home
     get "/currencies", CurrencyController, :index
-    get "/currencies/:id", CurrencyController, :show
+    get "/currencies/show/:id", CurrencyController, :show
     get "/currencies/:first_id/:second_id", CurrencyController, :compare
+    get "/currencies/new", CurrencyController, :new
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PhoenixParsingMarketDataWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", PhoenixParsingMarketDataWeb do
+    pipe_through :api
+
+    post "/currencies/create", CurrencyController, :create
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:phoenix_parsing_market_data, :dev_routes) do

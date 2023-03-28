@@ -548,7 +548,7 @@ defmodule PhoenixParsingMarketDataWeb.CoreComponents do
             <dt class="w-5/6 flex-none text-[0.8125rem] leading-6 text-zinc-500">
               <div>
                 <.link
-                  href={"/currencies/" <> Integer.to_string(item.id)}>
+                  href={"/currencies/show/" <> Integer.to_string(item.id)}>
                     <%= item.name %>
                     <div style="float: right;"> <%= item.description %> </div>
                   </.link>

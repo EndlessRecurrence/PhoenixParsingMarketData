@@ -6,13 +6,15 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
 
   def insert_currency(name, description) do
     currency = %Currency{}
-    {insert_operation_status, _} = Currency.changeset(currency, %{name: name, description: description}) |> Repo.insert()
+    {insert_operation_status, result} = Currency.changeset(currency, %{name: name, description: description}) |> Repo.insert()
     case insert_operation_status do
       :ok ->
         value = :rand.uniform() * 10 |> Float.round(4)
         currency = from(c in Currency, where: [name: ^name]) |> Repo.one()
         generate_random_currency_values(currency, 365, ~D[2023-01-01], value)
-      _ -> :failed_inserting_currencies
+        {:ok, currency}
+      _ ->
+        {:error, result}
     end
   end
 
