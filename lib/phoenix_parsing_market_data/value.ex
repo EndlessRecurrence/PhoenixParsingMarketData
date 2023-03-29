@@ -7,4 +7,8 @@ defmodule PhoenixParsingMarketData.ValueContext do
     changeset = Value.changeset(value_struct, %{currency_id: currency_id, date: date, value: value})
     Repo.insert(changeset)
   end
+
+  def delete_value(%Value{} = value) do
+    Repo.delete(value)
+  end
 end

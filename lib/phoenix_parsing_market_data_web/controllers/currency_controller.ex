@@ -58,12 +58,12 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
     end
   end
 
-  #def delete(conn, %{"id" => id}) do
-  #  currency = CurrencyContext.get_currency!(id)
-  #  {:ok, _currency} = CurrencyContext.delete_currency(currency)
+  def delete(conn, %{"id" => id}) do
+    currency = CurrencyContext.get_currency!(String.to_integer(id))
+    {:ok, _currency} = CurrencyContext.delete_currency(currency)
 
-  #  conn
-  #  |> put_flash(:info, "Currency deleted successfully.")
-  #  |> redirect(to: ~p"/currencies")
-  #end
+    conn
+    |> put_flash(:info, "Currency deleted successfully.")
+    |> redirect(to: ~p"/currencies")
+  end
 end

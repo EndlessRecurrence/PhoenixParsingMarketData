@@ -26,6 +26,11 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyHTML do
                     Edit
                   </button>
                 </.link>
+                <.link href={~p"/currencies/#{item.id}"} method="delete" data-confirm="Are you sure?">
+                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Delete
+                  </button>
+                </.link>
               </div>
             </dt>
         </div>
