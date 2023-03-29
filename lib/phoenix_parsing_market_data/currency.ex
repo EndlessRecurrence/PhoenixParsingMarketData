@@ -73,8 +73,6 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
   end
 
   def delete_currency(%Currency{} = currency) do
-    values = Map.get(currency, :values)
-    Enum.each(values, fn value -> ValueContext.delete_value(value) end)
     Repo.delete(currency)
   end
 
