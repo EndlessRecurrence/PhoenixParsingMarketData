@@ -4,20 +4,6 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
   alias PhoenixParsingMarketData.ValueContext
   import Ecto.Query
 
-  def insert_currency(name, description) do
-    currency = %Currency{}
-    {insert_operation_status, result} = Currency.changeset(currency, %{name: name, description: description}) |> Repo.insert()
-    case insert_operation_status do
-      :ok ->
-        value = :rand.uniform() * 10 |> Float.round(4)
-        currency = from(c in Currency, where: [name: ^name]) |> Repo.one()
-        generate_random_currency_values(currency, 365, ~D[2023-01-01], value)
-        {:ok, currency}
-      _ ->
-        {:error, result}
-    end
-  end
-
   def generate_random_currency_values(_, 0, _, _), do: :ok
   def generate_random_currency_values(currency, days, day, value) do
     id = currency |> Map.get(:id)
