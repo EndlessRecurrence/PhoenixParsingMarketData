@@ -72,6 +72,16 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
     }
   end
 
+  def delete_currency(%Currency{} = currency) do
+    Repo.delete(currency)
+  end
+
+  def update_currency(%Currency{} = currency, attrs) do
+    currency
+    |> Currency.changeset(attrs)
+    |> Repo.update()
+  end
+
   def change_currency(%Currency{} = currency, attrs \\ %{}) do
     Currency.changeset(currency, attrs)
   end

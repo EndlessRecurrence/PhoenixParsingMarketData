@@ -20,9 +20,11 @@ defmodule PhoenixParsingMarketDataWeb.Router do
     get "/", PageController, :home
     get "/currencies", CurrencyController, :index
     get "/currencies/show/:id", CurrencyController, :show
+    get "/currencies/:id/edit", CurrencyController, :edit
     get "/currencies/:first_id/:second_id", CurrencyController, :compare
     get "/currencies/new", CurrencyController, :new
     post "/currencies", CurrencyController, :create
+    put "/currencies/:id", CurrencyController, :update
   end
 
   scope "/api", PhoenixParsingMarketDataWeb do

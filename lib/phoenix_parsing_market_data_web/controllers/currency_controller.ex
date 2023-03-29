@@ -38,25 +38,25 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
     render(conn, :compare, table_values: table_values)
   end
 
-  #def edit(conn, %{"id" => id}) do
-  #  currency = CurrencyContext.get_currency!(id)
-  #  changeset = CurrencyContext.change_currency(currency)
-  #  render(conn, :edit, currency: currency, changeset: changeset)
-  #end
+  def edit(conn, %{"id" => id}) do
+    currency = CurrencyContext.get_currency!(String.to_integer(id))
+    changeset = CurrencyContext.change_currency(currency)
+    render(conn, :edit, currency: currency, changeset: changeset)
+  end
 
-  #def update(conn, %{"id" => id, "currency" => currency_params}) do
-  #  currency = CurrencyContext.get_currency!(id)
+  def update(conn, %{"id" => id, "currency" => currency_params}) do
+    currency = CurrencyContext.get_currency!(String.to_integer(id))
 
-  #  case CurrencyContext.update_currency(currency, currency_params) do
-  #    {:ok, currency} ->
-  #      conn
-  #      |> put_flash(:info, "Currency updated successfully.")
-  #      |> redirect(to: ~p"/currencies/#{currency}")
+    case CurrencyContext.update_currency(currency, currency_params) do
+      {:ok, currency} ->
+        conn
+        |> put_flash(:info, "Currency updated successfully.")
+        |> redirect(to: ~p"/currencies/show/#{currency}")
 
-  #    {:error, %Ecto.Changeset{} = changeset} ->
-  #      render(conn, :edit, currency: currency, changeset: changeset)
-  #  end
-  #end
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, :edit, currency: currency, changeset: changeset)
+    end
+  end
 
   #def delete(conn, %{"id" => id}) do
   #  currency = CurrencyContext.get_currency!(id)
