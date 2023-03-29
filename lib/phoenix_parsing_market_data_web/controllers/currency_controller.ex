@@ -1,6 +1,5 @@
 defmodule PhoenixParsingMarketDataWeb.CurrencyController do
   use PhoenixParsingMarketDataWeb, :controller
-  require Protocol
 
   alias PhoenixParsingMarketData.CurrencyContext
   alias PhoenixParsingMarketData.Currencies.Currency
@@ -11,12 +10,20 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
   end
 
   def new(conn, _params) do
-    render(conn, :new)
+    changeset = CurrencyContext.change_currency(%Currency{})
+    render(conn, :new, changeset: changeset)
   end
 
-  def create(conn, %{"name" => name, "description" => description}) do
-    {_, currency} = CurrencyContext.insert_currency(name, description)
-    json(conn, currency)
+  def create(conn, %{"currency" => currency_params}) do
+    IO.inspect currency_params
+    case CurrencyContext.create_currency(currency_params) do
+      {:ok, currency} ->
+        conn
+          |> put_flash(:info, "Currency created successfully.")
+          |> redirect(to: ~p"/currencies/show/#{currency}")
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, :new, changeset: changeset)
+    end
   end
 
   def show(conn, %{"id" => id}) do
@@ -26,7 +33,6 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
     render(conn, :show, currency: currency, currencies: currencies)
   end
 
-  @spec compare(Plug.Conn.t(), map) :: Plug.Conn.t()
   def compare(conn, %{"first_id" => first_id, "second_id" => second_id}) do
     table_values = CurrencyContext.compare_two_currencies(first_id, second_id)
     render(conn, :compare, table_values: table_values)

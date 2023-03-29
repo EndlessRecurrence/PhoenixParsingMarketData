@@ -18,7 +18,6 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
     end
   end
 
-  @spec generate_random_currency_values(any, non_neg_integer, any, any) :: :ok
   def generate_random_currency_values(_, 0, _, _), do: :ok
   def generate_random_currency_values(currency, days, day, value) do
     id = currency |> Map.get(:id)
@@ -39,6 +38,21 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
       |> Repo.preload(:values)
   end
   def get_currency!(_), do: raise RuntimeError, message: "The id given to the get_currency function is not an integer."
+
+  def create_currency(attrs \\ %{}) do
+    operation_result = %Currency{}
+      |> Currency.changeset(attrs)
+      |> Repo.insert()
+
+    case operation_result do
+      {:ok, currency} ->
+        value = :rand.uniform() * 10 |> Float.round(4)
+        currency = from(c in Currency, where: [name: ^Map.get(currency, :name)]) |> Repo.one()
+        generate_random_currency_values(currency, 365, ~D[2023-01-01], value)
+        {:ok, currency}
+      error_tuple -> error_tuple
+    end
+  end
 
   def compare_two_currencies(first_currency_id, second_currency_id) do
     first_currency = get_currency!(String.to_integer(first_currency_id))
@@ -70,5 +84,9 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
       second_currency_values: second_currency_values,
       conversion_rates: conversion_rates
     }
+  end
+
+  def change_currency(%Currency{} = currency, attrs \\ %{}) do
+    Currency.changeset(currency, attrs)
   end
 end

@@ -22,12 +22,11 @@ defmodule PhoenixParsingMarketDataWeb.Router do
     get "/currencies/show/:id", CurrencyController, :show
     get "/currencies/:first_id/:second_id", CurrencyController, :compare
     get "/currencies/new", CurrencyController, :new
+    post "/currencies", CurrencyController, :create
   end
 
   scope "/api", PhoenixParsingMarketDataWeb do
     pipe_through :api
-
-    post "/currencies/create", CurrencyController, :create
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
