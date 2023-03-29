@@ -19,18 +19,17 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyHTML do
             <dt class="w-5/6 flex-none text-[0.8125rem] leading-6 text-zinc-500">
               <div>
                 <.link navigate={"/currencies/show/#{item.id}"}> <%= item.name %> </.link>
-                <div style="float: right;"> <%= item.description %> </div>
-
                 <.link navigate={~p"/currencies/#{item.id}/edit"}>
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  <button style="margin-left: 10px; float:right;" class="bg-gray-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
                     Edit
                   </button>
                 </.link>
                 <.link href={~p"/currencies/#{item.id}"} method="delete" data-confirm="Are you sure?">
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  <button style="margin-left: 20px; float:right;" class="bg-gray-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
                     Delete
                   </button>
                 </.link>
+                <div style="float: right;"> <%= item.description %> </div>
               </div>
             </dt>
         </div>
