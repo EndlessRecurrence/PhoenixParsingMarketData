@@ -18,7 +18,11 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyHTML do
         <div :for={item <- @item} class="flex gap-4 py-4 sm:gap-8">
             <dt class="w-5/6 flex-none text-[0.8125rem] leading-6 text-zinc-500">
               <div>
-                <.link navigate={"/currencies/show/#{item.id}"}> <%= item.name %> </.link>
+                <.link navigate={"/currencies/show/#{item.id}"}>
+                  <button class="bg-gray-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
+                    <%= item.name %>
+                  </button>
+                </.link>
                 <.link navigate={~p"/currencies/#{item.id}/edit"}>
                   <button style="margin-left: 10px; float:right;" class="bg-gray-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
                     Edit
