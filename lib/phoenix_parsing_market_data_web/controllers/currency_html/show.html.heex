@@ -2,7 +2,7 @@
   <div>
     Currency: <%= @currency.name %>
       <div style="float: right;">
-        <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Currency to compare with<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+        <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-gray-800 dark:hover:bg-blue-900 dark:focus:ring-blue-800" type="button">Currency to compare with<svg class="w-4 h-4 ml-2" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
         <div id="dropdownHover" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
               <%= for index <- 0..length(@currencies)-1 do %>
@@ -25,7 +25,44 @@
   <:subtitle><%= @currency.description %></:subtitle>
 </.header>
 
-<div id="comparison-table-container">
+<div id="values-container">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+      <tr class="rounded-lg">
+        <th scope="col" class="px-6 py-3">
+          Date
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Value
+        </th>
+        <th scope="col" class="px-6 py-3"></th>
+      </tr>
+</thead>
+<tbody>
+    <%
+      values = Enum.sort(@currency.values, fn x, y ->
+        Date.compare(Map.get(x, :date), Map.get(y, :date)) != :gt
+      end)
+    %>
+    <%= for value_index <- 0..length(values)-1 do %>
+    <tr class="border-b border-gray-200 dark:border-gray-700">
+        <th scope="row" class="px-6 py-4">
+          <%= Enum.at(values, value_index) |> Map.get(:date) %>
+        </th>
+        <td class="px-6 py-4">
+          <%= Enum.at(values, value_index) |> Map.get(:value) |> Float.round(4) %>
+        </td>
+        <td class="px-6 py-4">
+          <.link navigate={~p"/values/#{Enum.at(values, value_index)}/edit"}>
+            <button style="margin-left: 20px; float:right;" class="bg-gray-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
+              Edit
+            </button>
+          </.link>
+        </td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>
 
 <.back navigate={~p"/currencies"}>Back to currencies</.back>

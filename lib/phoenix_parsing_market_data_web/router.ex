@@ -26,6 +26,9 @@ defmodule PhoenixParsingMarketDataWeb.Router do
     post "/currencies", CurrencyController, :create
     put "/currencies/:id", CurrencyController, :update
     delete "/currencies/:id", CurrencyController, :delete
+
+    get "/values/:id/edit", ValueController, :edit
+    put "/values/:id", ValueController, :update
   end
 
   scope "/api", PhoenixParsingMarketDataWeb do

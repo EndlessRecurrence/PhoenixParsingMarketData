@@ -1,0 +1,14 @@
+<.header>
+  Value <%= @value.id %>
+  <:subtitle>This is a value record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/values/#{@value}/edit"}>
+      <.button>Edit value</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+</.list>
+
+<.back navigate={~p"/values"}>Back to values</.back>
