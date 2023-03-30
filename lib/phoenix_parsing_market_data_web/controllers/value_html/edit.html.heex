@@ -5,4 +5,4 @@
 
 <.value_form changeset={@changeset} action={~p"/values/#{@value}"} />
 
-<.back navigate={~p"/values"}>Back to values</.back>
+<.back navigate={~p"/currencies/show/#{@value.currency.id}"}>Back to currency</.back>
