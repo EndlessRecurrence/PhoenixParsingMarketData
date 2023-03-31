@@ -40,16 +40,18 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
     end
   end
 
-  def compare_two_currencies(first_currency_id, second_currency_id) do
+  def compare_two_currencies(first_currency_id, second_currency_id, first_date, second_date) do
     first_currency = get_currency!(String.to_integer(first_currency_id))
     second_currency = get_currency!(String.to_integer(second_currency_id))
 
     first_currency_values_structs =
-      Map.get(first_currency, :values) |>
-      Enum.sort(fn x, y -> Date.compare(Map.get(x, :date), Map.get(y, :date)) != :lt end)
+      Map.get(first_currency, :values)
+        |> Enum.sort(fn x, y -> Date.compare(Map.get(x, :date), Map.get(y, :date)) != :lt end)
+        |> Enum.filter(fn x -> Date.compare(Map.get(x, :date), first_date) != :lt and Date.compare(Map.get(x, :date), second_date) != :gt end)
     second_currency_values_structs =
-      Map.get(second_currency, :values) |>
-      Enum.sort(fn x, y -> Date.compare(Map.get(x, :date), Map.get(y, :date)) != :lt end)
+      Map.get(second_currency, :values)
+        |> Enum.sort(fn x, y -> Date.compare(Map.get(x, :date), Map.get(y, :date)) != :lt end)
+        |> Enum.filter(fn x -> Date.compare(Map.get(x, :date), first_date) != :lt and Date.compare(Map.get(x, :date), second_date) != :gt end)
     dates = Enum.map(first_currency_values_structs, fn x -> Map.get(x, :date) end)
 
     first_currency_values = Enum.map(first_currency_values_structs, &Map.get(&1, :value))
@@ -84,5 +86,12 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
 
   def change_currency(%Currency{} = currency, attrs \\ %{}) do
     Currency.changeset(currency, attrs)
+  end
+
+  def get_default_date_interval() do
+    {
+      ValueContext.get_least_recent_date(),
+      ValueContext.get_most_recent_date()
+    }
   end
 end

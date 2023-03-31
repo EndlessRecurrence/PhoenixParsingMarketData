@@ -29,12 +29,20 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
   def show(conn, %{"id" => id}) do
     currency = CurrencyContext.get_currency!(String.to_integer(id))
     currencies = CurrencyContext.fetch_currencies() |> Enum.filter(fn x -> Map.get(x, :name) != Map.get(currency, :name) end)
+    default_date_interval = CurrencyContext.get_default_date_interval()
+    interval_as_unwrapped_objects = {
+      Map.get(elem(default_date_interval, 0), :min_date),
+      Map.get(elem(default_date_interval, 1), :max_date)
+    }
+    IO.inspect(interval_as_unwrapped_objects)
 
-    render(conn, :show, currency: currency, currencies: currencies)
+    render(conn, :show, currency: currency, currencies: currencies, default_date_interval: interval_as_unwrapped_objects)
   end
 
-  def compare(conn, %{"first_id" => first_id, "second_id" => second_id}) do
-    table_values = CurrencyContext.compare_two_currencies(first_id, second_id)
+  def compare(conn, %{"first_id" => first_id, "second_id" => second_id, "first_date" => first_date_as_string, "second_date" => second_date_as_string}) do
+    {_, first_date} = Date.from_iso8601(first_date_as_string)
+    {_, second_date} = Date.from_iso8601(second_date_as_string)
+    table_values = CurrencyContext.compare_two_currencies(first_id, second_id, first_date, second_date)
     render(conn, :compare, table_values: table_values)
   end
 

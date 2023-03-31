@@ -1,5 +1,10 @@
 <.header>
   <div>
+    <%
+      default_date_interval = @default_date_interval
+      first_date = elem(default_date_interval, 0) |> Date.to_string()
+      second_date = elem(default_date_interval, 1) |> Date.to_string()
+    %>
     Currency: <%= @currency.name %>
     <.modal id="date-picker-modal">
       Are you sure?
@@ -17,16 +22,16 @@
                     reference_currency_name = Enum.at(@currencies, index) |> Map.get(:name)
                     reference_currency_id = Enum.at(@currencies, index) |> Map.get(:id)
                   %>
-                  <!--
-                  <.link href={"/currencies/#{@currency.id}/#{reference_currency_id}"}>
-                    TODO: Add this link within the date-picker modal to navigate to the comparison page once the OK
-                    button is clicked.
+                  <.link href={"/currencies/#{@currency.id}/#{reference_currency_id}/#{first_date}/#{second_date}"}
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    <%= reference_currency_name %>
                   </.link>
-                  -->
+                  <!--
                   <.link phx-click={show_modal("date-picker-modal")}
                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                     <%= reference_currency_name %>
                   </.link>
+                  -->
                 </li>
                 <% end %>
               <% else %>

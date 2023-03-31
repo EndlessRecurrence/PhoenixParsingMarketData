@@ -21,7 +21,7 @@ defmodule PhoenixParsingMarketDataWeb.Router do
     get "/currencies", CurrencyController, :index
     get "/currencies/show/:id", CurrencyController, :show
     get "/currencies/:id/edit", CurrencyController, :edit
-    get "/currencies/:first_id/:second_id", CurrencyController, :compare
+    get "/currencies/:first_id/:second_id/:first_date/:second_date", CurrencyController, :compare
     get "/currencies/new", CurrencyController, :new
     post "/currencies", CurrencyController, :create
     put "/currencies/:id", CurrencyController, :update

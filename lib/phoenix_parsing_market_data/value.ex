@@ -29,4 +29,12 @@ defmodule PhoenixParsingMarketData.ValueContext do
     |> Value.changeset(attrs)
     |> Repo.update()
   end
+
+  def get_most_recent_date() do
+    from(v in Value) |> select([v], %{max_date: max(v.date)}) |> Repo.one()
+  end
+
+  def get_least_recent_date() do
+    from(v in Value) |> select([v], %{min_date: min(v.date)}) |> Repo.one()
+  end
 end
