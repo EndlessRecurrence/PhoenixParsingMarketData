@@ -34,7 +34,7 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
       Map.get(elem(default_date_interval, 0), :min_date),
       Map.get(elem(default_date_interval, 1), :max_date)
     }
-    IO.inspect(interval_as_unwrapped_objects)
+    IO.inspect interval_as_unwrapped_objects, label: "Unwrapped date objects"
 
     render(conn, :show, currency: currency, currencies: currencies, default_date_interval: interval_as_unwrapped_objects)
   end
@@ -43,7 +43,17 @@ defmodule PhoenixParsingMarketDataWeb.CurrencyController do
     {_, first_date} = Date.from_iso8601(first_date_as_string)
     {_, second_date} = Date.from_iso8601(second_date_as_string)
     table_values = CurrencyContext.compare_two_currencies(first_id, second_id, first_date, second_date)
-    render(conn, :compare, table_values: table_values)
+    {oldest_date, newest_date} = CurrencyContext.get_default_date_interval()
+    {oldest_date_in_slash_format, newest_date_in_slash_format} = CurrencyContext.get_default_date_interval_in_slash_format()
+    IO.inspect oldest_date_in_slash_format, label: :oldest_date_in_slash_format
+    IO.inspect newest_date_in_slash_format, label: :newest_date_in_slash_format
+
+    render(conn, :compare,
+          table_values: table_values,
+          oldest_date: oldest_date,
+          newest_date: newest_date,
+          newest_date_in_slash_format: newest_date_in_slash_format,
+          oldest_date_in_slash_format: oldest_date_in_slash_format)
   end
 
   def edit(conn, %{"id" => id}) do

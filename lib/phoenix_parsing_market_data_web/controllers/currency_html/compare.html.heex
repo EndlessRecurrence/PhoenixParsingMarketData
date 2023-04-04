@@ -2,8 +2,25 @@
 </.header>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <input type="text" name="daterange" value={@oldest_date_in_slash_format <> " - " <> @newest_date_in_slash_format} class="rounded-full"/>
+  <!--
+  <.link navigate={~p"/currencies/#{@table_values.first_currency_id}/#{@table_values.second_currency_id}/#{@table_values.first_date}/#{@table_values.second_date}"}>
+    <button style="margin-left: 20px; float:right;" class="bg-gray-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-full">
+      Refresh exchange rate
+    </button>
+  </.link>
+  -->
+  <% IO.inspect @conn.request_path %>
+  <script>
+  $(function() {
+    $('input[name="daterange"]').daterangepicker({
+      opens: 'left'
+    }, function(start, end, label) {
+      console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+  });
+  </script>
   <div id="exchangeRateVariationPlot" class="w-full" style="height: 300px"></div>
-
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
       <tr>

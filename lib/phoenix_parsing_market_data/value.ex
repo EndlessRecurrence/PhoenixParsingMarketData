@@ -31,10 +31,34 @@ defmodule PhoenixParsingMarketData.ValueContext do
   end
 
   def get_most_recent_date() do
-    from(v in Value) |> select([v], %{max_date: max(v.date)}) |> Repo.one()
+    from(v in Value)
+      |> select([v], %{max_date: max(v.date)})
+      |> Repo.one()
   end
 
   def get_least_recent_date() do
-    from(v in Value) |> select([v], %{min_date: min(v.date)}) |> Repo.one()
+    from(v in Value)
+      |> select([v], %{min_date: min(v.date)})
+      |> Repo.one()
+  end
+
+  def get_today_date() do
+    today = Date.utc_today()
+    %{max_date: today}
+  end
+
+  def get_most_recent_date_in_slash_format() do
+    newest_date = get_most_recent_date() |> Map.get(:max_date) |> Date.to_iso8601()
+    Regex.replace(~r/(\d+)-(\d+)-(\d+)/, newest_date, "\\3/\\2/\\1")
+  end
+
+  def get_least_recent_date_in_slash_format() do
+    oldest_date = get_least_recent_date() |> Map.get(:min_date) |> Date.to_iso8601()
+    Regex.replace(~r/(\d+)-(\d+)-(\d+)/, oldest_date, "\\3/\\2/\\1")
+  end
+
+  def get_today_in_slash_format() do
+    today = Date.utc_today() |> Date.to_iso8601()
+    Regex.replace(~r/(\d+)-(\d+)-(\d+)/, today, "\\3/\\2/\\1")
   end
 end

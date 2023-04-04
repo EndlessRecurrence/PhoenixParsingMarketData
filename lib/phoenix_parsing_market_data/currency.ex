@@ -70,6 +70,10 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
     %{
       first_currency: Map.get(first_currency, :name),
       second_currency: Map.get(second_currency, :name),
+      first_currency_id: Map.get(first_currency, :id),
+      second_currency_id: Map.get(second_currency, :id),
+      first_date: Date.to_iso8601(first_date),
+      second_date: Date.to_iso8601(second_date),
       dates: dates,
       first_currency_values: first_currency_values,
       second_currency_values: second_currency_values,
@@ -94,7 +98,14 @@ defmodule PhoenixParsingMarketData.CurrencyContext do
   def get_default_date_interval() do
     {
       ValueContext.get_least_recent_date(),
-      ValueContext.get_most_recent_date()
+      ValueContext.get_today_date()
+    }
+  end
+
+  def get_default_date_interval_in_slash_format() do
+    {
+      ValueContext.get_least_recent_date_in_slash_format(),
+      ValueContext.get_today_in_slash_format()
     }
   end
 end
