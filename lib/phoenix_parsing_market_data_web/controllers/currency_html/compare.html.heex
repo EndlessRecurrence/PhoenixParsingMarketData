@@ -2,14 +2,26 @@
 </.header>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-<!--value={@oldest_date_in_slash_format <> " - " <> @newest_date_in_slash_format}  -->
+  <!--value={@oldest_date_in_slash_format <> " - " <> @newest_date_in_slash_format}  -->
+  <%
+    IO.inspect @conn.request_path, label: "Request path"
+    {start_date, end_date} =
+      Regex.split(~r{/}, @conn.request_path)
+        |> Enum.drop(4)
+        |> Enum.map(&Regex.replace(~r/(\d+)-(\d+)-(\d+)/, &1, "\\3/\\2/\\1"))
+        |> List.to_tuple()
+    IO.inspect {start_date, end_date}, label: "Date interval from URL"
+  %>
+
   <div class="grid grid-cols-1 content-center">
     <script>
     let request_path = "<%= @conn.request_path %>"
     $(function() {
       $('#daterange').daterangepicker({
         opens: 'center',
-        drops: 'up'
+        drops: 'up',
+        minDate: "<%= @oldest_date_in_slash_format %>",
+        maxDate: "<%= @newest_date_in_slash_format %>",
       }, function(start, end, label) {
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
         tokens = request_path.split("/").slice(0, -2).concat([start.format("YYYY-MM-DD"), end.format("YYYY-MM-DD")])
@@ -20,7 +32,7 @@
     });
     </script>
     <div id="exchangeRateVariationPlot" class="w-full" style="height: 300px"></div>
-    <input type="text" name="daterange" class="rounded-full text-center" id="daterange"/>
+    <input type="text" name="daterange" class="rounded-full text-center" id="daterange" value=""/>
   </div>
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
