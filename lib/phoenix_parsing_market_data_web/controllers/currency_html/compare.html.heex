@@ -10,13 +10,17 @@
     </button>
   </.link>
   -->
-  <% IO.inspect @conn.request_path %>
   <script>
+  let request_path = "<%= @conn.request_path %>"
   $(function() {
     $('input[name="daterange"]').daterangepicker({
       opens: 'left'
     }, function(start, end, label) {
       console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+      tokens = request_path.split("/").slice(0, -2).concat([start.format("YYYY-MM-DD"), end.format("YYYY-MM-DD")])
+      redirect_path = "http://localhost:4000/" + tokens.join("/")
+      console.log(redirect_path)
+      window.location.replace(redirect_path);
     });
   });
   </script>
