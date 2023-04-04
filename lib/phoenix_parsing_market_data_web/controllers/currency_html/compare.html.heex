@@ -2,22 +2,26 @@
 </.header>
 
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-  <input type="text" name="daterange" value={@oldest_date_in_slash_format <> " - " <> @newest_date_in_slash_format} class="rounded-full"/>
-  <script>
-  let request_path = "<%= @conn.request_path %>"
-  $(function() {
-    $('input[name="daterange"]').daterangepicker({
-      opens: 'left'
-    }, function(start, end, label) {
-      console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-      tokens = request_path.split("/").slice(0, -2).concat([start.format("YYYY-MM-DD"), end.format("YYYY-MM-DD")])
-      redirect_path = "http://localhost:4000" + tokens.join("/")
-      console.log(redirect_path)
-      window.location.replace(redirect_path);
+<!--value={@oldest_date_in_slash_format <> " - " <> @newest_date_in_slash_format}  -->
+  <div class="grid grid-cols-1 content-center">
+    <script>
+    let request_path = "<%= @conn.request_path %>"
+    $(function() {
+      $('#daterange').daterangepicker({
+        opens: 'center',
+        drops: 'up'
+      }, function(start, end, label) {
+        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        tokens = request_path.split("/").slice(0, -2).concat([start.format("YYYY-MM-DD"), end.format("YYYY-MM-DD")])
+        redirect_path = "http://localhost:4000" + tokens.join("/")
+        console.log(redirect_path)
+        window.location.replace(redirect_path);
+      });
     });
-  });
-  </script>
-  <div id="exchangeRateVariationPlot" class="w-full" style="height: 300px"></div>
+    </script>
+    <div id="exchangeRateVariationPlot" class="w-full" style="height: 300px"></div>
+    <input type="text" name="daterange" class="rounded-full text-center" id="daterange"/>
+  </div>
   <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
       <tr>
